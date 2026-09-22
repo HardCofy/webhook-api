@@ -39,3 +39,18 @@ export const createWebhookEvent = async (
 
     return event
 }
+
+export async function getWebhookEventById(eventId: string) {
+    const result = await pool.query(`
+        SELECT id,
+        endpoint_id,
+        payload, status,
+        attempts,
+        created_at,
+        updated_at
+        FROM webhook_events WHERE id = $1`,
+        [eventId]
+    );
+
+    return result.rows[0] ?? null;
+}
